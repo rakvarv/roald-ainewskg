@@ -1,0 +1,5 @@
+@prefix ex: <http://example.org/> .
+
+ex:geo a ex:GeospatialInformation ;
+    ex:wktLiteral "POINT(61.7237, 10.1851) (Ringebu)" .
+

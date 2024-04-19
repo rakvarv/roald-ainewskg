@@ -29,23 +29,31 @@ job_start_times = {row[0]: row[1] for row in rows}
 # Define a global variable to store the execution status
 execution_status = ""
 
-# Define a function to perform the scheduled task
+# Define functions for different tasks
+def task1():
+    # Task 1 action
+    print("Executing Task 1")
+
+def task2():
+    # Task 2 action
+    print("Executing Task 2")
+
+# Map job IDs to corresponding functions
+job_functions = {
+    'job1': task1,
+    'job2': task2,
+}
+
+# Define the scheduled_task function to execute tasks based on job ID
 def scheduled_task(job_id):
     global execution_status
-    execution_status = f"Scheduled task {job_id} executed at {datetime.now()}"
+    if job_id in job_functions:
+        job_functions[job_id]()
+        execution_status = f"Task {job_id} executed at {datetime.now()}"
+    else:
+        print(f"No task defined for job ID {job_id}")
+        execution_status = f"No task defined for job ID {job_id} at {datetime.now()}"
     print(execution_status)
-    # Update the layout to display the execution status
-    app.layout = html.Div([
-        html.Div(id='job-list', children=[
-            html.H2("List of Jobs"),
-            html.Ul(id='job-ul', children=[html.Li(f"Job ID: {job_id}, Scheduled Time: {scheduled_time}") for job_id, scheduled_time in job_start_times.items()])
-        ]),
-        dcc.Input(id='job-id-input', type='text', placeholder='Enter job ID'),
-        dcc.Input(id='scheduled-time-input', type='text', placeholder='Enter scheduled time (e.g., 09:00)'),
-        html.Button('Schedule Task', id='schedule-button'),
-        html.Div(id='output-container-button'),
-        html.Div(id='execution-status', children=execution_status)  # Add this div to display the execution status
-    ])
 
 # Define a function to add a new job to the scheduler
 def add_job_to_scheduler(job_id, scheduled_time):
